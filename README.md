@@ -23,7 +23,7 @@ A desktop calculator simulation built with Qt 6.10.2 and C++.
   3.  Configure Qt 6.10.2 environment and build the project
 
 ## Project Structure
-Calculator/
+- Calculator/
 - ├── Core/ Core calculation logic and expression parser
 - ├── Game/ Easter egg and interactive game-related features
 - ├── Helper/ Utility classes and helper functions
