@@ -1,5 +1,0 @@
-E:/code-content/code-content/Qt_programme/Calculator/out/build/release/CMakeFiles/CalculatorUI.dir
-E:/code-content/code-content/Qt_programme/Calculator/out/build/release/CMakeFiles/edit_cache.dir
-E:/code-content/code-content/Qt_programme/Calculator/out/build/release/CMakeFiles/rebuild_cache.dir
-E:/code-content/code-content/Qt_programme/Calculator/out/build/release/CMakeFiles/CalculatorUI_autogen_timestamp_deps.dir
-E:/code-content/code-content/Qt_programme/Calculator/out/build/release/CMakeFiles/CalculatorUI_autogen.dir
