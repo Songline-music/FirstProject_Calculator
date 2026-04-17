@@ -156,7 +156,6 @@ void CalculatorUI::applyOperatorToken(const QString& op)
     ui.InputLine->insert(op);
 }
 
-// 按键输入处理
 void CalculatorUI::onNumberInputClicked() // 数字
 {
     QPushButton* button = qobject_cast<QPushButton*>(sender());
@@ -168,15 +167,36 @@ void CalculatorUI::onNumberInputClicked() // 数字
     const QString buttonText = GetButtonInput(button);
     QString text = ui.InputLine->text();
 
+    auto hasDotInCurrentNumber = [this]() -> bool
+        {
+            const QString s = ui.InputLine->text();
+            const int n = s.size();
+            int pos = ui.InputLine->cursorPosition();
+            if (pos < 0) pos = 0;
+            if (pos > n) pos = n;
+
+            auto isNumChar = [](QChar ch) -> bool
+                {
+                    return ch.isDigit() || ch == '.';
+                };
+
+            int left = pos - 1;
+            while (left >= 0 && isNumChar(s[left])) --left;
+
+            int right = pos;
+            while (right < n && isNumChar(s[right])) ++right;
+
+            const QString token = s.mid(left + 1, right - left - 1);
+            return token.contains('.');
+        };
+
     if (hasResult)
     {
         if (buttonText == ".")
         {
+            ui.InputLine->setText("0.");
+            ui.InputLine->setCursorPosition(2);
             hasResult = false;
-            if (!text.contains('.'))
-            {
-                ui.InputLine->insert(".");
-            }
             return;
         }
 
@@ -185,15 +205,16 @@ void CalculatorUI::onNumberInputClicked() // 数字
         text = ui.InputLine->text();
     }
 
-    if (text == "0" && buttonText != ".")
+    if (buttonText == ".")
+    {
+        if (hasDotInCurrentNumber())
+        {
+            return;
+        }
+    }
+    else if (text == "0")
     {
         ui.InputLine->setText("");
-    }
-
-    // 防止重复输入小数点
-    if (buttonText == "." && ui.InputLine->text().contains('.'))
-    {
-        return;
     }
 
     ui.InputLine->insert(buttonText);
@@ -601,8 +622,8 @@ void CalculatorUI::connectSignals()
     // 程序员运算符
     const std::initializer_list<QPushButton*> progOpButtons = {
         ui.pushButton___Add, ui.pushButton___Sub, ui.pushButton___Multi, ui.pushButton___Divide,
-        ui.pushButton___LeftParen, ui.pushButton___RightParen, ui.pushButton___Point,
-        ui.pushButton_OR,ui.pushButton_AND,ui.pushButton_XOR
+        ui.pushButton___LeftParen, ui.pushButton___RightParen,
+        ui.pushButton_OR, ui.pushButton_AND, ui.pushButton_XOR
     };
     for (auto* b : progOpButtons)
     {
